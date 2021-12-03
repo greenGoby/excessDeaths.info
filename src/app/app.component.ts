@@ -39,6 +39,8 @@ declare var google:any;
 })
 export class AppComponent {
 
+  @ViewChild( "rootElement" ) rootElement;
+
   title = 'excessDeaths';
 
   chartsLoaded:boolean = false;
@@ -132,6 +134,9 @@ export class AppComponent {
       this.covidDataLoaded = true;
       this.checkWindowResized();
     });
+    this.experienceService.getRageHook( this.rootElement.nativeElement ).subscribe( (event:any) => {
+      console.log( "Got rage click " + event );
+    });
    }
 
    checkWindowResized() {
@@ -141,6 +146,7 @@ export class AppComponent {
    }
 
    stateChanged() {
+     this.experienceService.sendCustomEvent( "stateSelected", { state: this.currentState.name });
      this.loadState( this.currentState ).subscribe( (stateCovidData:StateCovidData) => {
        this.drawVisualization();
      });
@@ -160,6 +166,7 @@ export class AppComponent {
       setTimeout( ()=> {
         this.drawVisualization();
       });
+      this.experienceService.sendCustomEvent( "windowResized", { viewWidth: originalWidth, viewHeight: originalHeight });
     }
 
 
