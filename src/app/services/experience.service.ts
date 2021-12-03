@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as FullStory from '@fullstory/browser';
 import {Subject} from 'rxjs';
+import {environment} from '../../environments/environment';
 
 export class RageEvent {
   eventEndTimeStamp: number;
@@ -18,8 +19,8 @@ export class ExperienceService {
 
   constructor() {
     FullStory.init({
-      orgId: '171GWQ',
-      debug: true
+      orgId: environment.orgId,
+      debug: environment.debug
     });
   }
 
