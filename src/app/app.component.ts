@@ -79,7 +79,7 @@ export class AppComponent {
   viewHeight:number = 0;
   graphWidth:number = 0;
   graphHeight:number = 0;
-  static readonly TOP_ROW_ADJUSTMENT:number = 70;
+  static readonly TOP_ROW_ADJUSTMENT:number = 80;
   static readonly ACTION_BAR_ADJUSTMENT:number = 70;
 
   fromDate = new FormControl(moment());
@@ -161,7 +161,7 @@ export class AppComponent {
       this.viewWidth = originalWidth;
       this.viewHeight = originalHeight - AppComponent.TOP_ROW_ADJUSTMENT;
       this.graphHeight = originalHeight - (AppComponent.TOP_ROW_ADJUSTMENT + AppComponent.ACTION_BAR_ADJUSTMENT);
-      this.graphWidth = originalWidth - 10;
+      this.graphWidth = originalWidth - 20;
       console.log( "view  " + this.viewWidth + " " + this.viewHeight );
       setTimeout( ()=> {
         this.drawVisualization();
