@@ -23,6 +23,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatMomentDateModule} from "@angular/material-moment-adapter";
 import {MAT_DATE_FORMATS} from "@angular/material/core";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 // See the Moment.js docs for the meaning of these formats:
 // https://momentjs.com/docs/#/displaying/format/
@@ -59,6 +60,7 @@ export const DATE_FORMATS = {
     MatMenuModule,
     MatRadioModule,
     MatSelectModule,
+    MatSidenavModule,
     MatSortModule,
     MatTableModule,
     MatTooltipModule,

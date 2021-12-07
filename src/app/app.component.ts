@@ -21,6 +21,7 @@ import {Moment} from 'moment';
 import {MatInput} from '@angular/material/input';
 import {FormControl} from '@angular/forms';
 import {ExperienceService, RageEvent} from './services/experience.service';
+import {MatSidenav} from "@angular/material/sidenav";
 
 const moment =  _moment;
 
@@ -56,13 +57,14 @@ export class AppComponent {
     this.monthOptions.stepsArray = [];
 
     this.resizeSubject.pipe( debounceTime( 1000 ) ).subscribe( (event) => {
-      this.windowResized(event);
+      this.windowResized(event, true );
     });
   }
   static readonly TOP_ROW_ADJUSTMENT: number = 80;
   static readonly ACTION_BAR_ADJUSTMENT: number = 70;
 
   @ViewChild( 'rootElement' ) rootElement;
+  @ViewChild('rageDrawer') rageDrawer: MatSidenav;
 
   title = 'excessDeaths';
 
@@ -135,13 +137,13 @@ export class AppComponent {
       this.checkWindowResized();
     });
     this.experienceService.getRageHook( this.rootElement.nativeElement ).subscribe( (event: RageEvent) => {
-      console.log( 'Got rage click ' + event );
+      this.rageClick( event );
     });
    }
 
    checkWindowResized(): void {
     if ( this.chartsLoaded && this.excessDeathsLoaded && this.covidDataLoaded ){
-      this.windowResized(null);
+      this.windowResized(null, false );
     }
    }
 
@@ -152,7 +154,7 @@ export class AppComponent {
      });
    }
 
-    windowResized( event ): void {
+    windowResized( event: any, sendEvent: boolean ): void {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const originalWidth: number = width;
@@ -166,7 +168,9 @@ export class AppComponent {
       setTimeout( () => {
         this.drawVisualization();
       });
-      this.experienceService.sendCustomEvent( 'windowResized', { viewWidth: originalWidth, viewHeight: originalHeight });
+      if( sendEvent ){
+        this.experienceService.sendCustomEvent( 'windowResized', { viewWidth: originalWidth, viewHeight: originalHeight });
+      }
     }
 
 
@@ -277,21 +281,21 @@ export class AppComponent {
     }
   }
 
-  minValueChanged() {
+  minValueChanged(): void {
     const ctrlValue = this.fromDate.value;
     this.userMinDate = new Date( ctrlValue );
     console.log( 'setting user min date to ' + this.userMinDate + ' ' + ctrlValue );
     this.drawVisualization();
   }
 
-  maxValueChanged() {
+  maxValueChanged(): void {
     const ctrlValue = this.toDate.value;
     this.userMaxDate = new Date( ctrlValue );
     console.log( 'setting user max date to ' + this.userMaxDate + ' ' + ctrlValue );
     this.drawVisualization();
   }
 
-  minMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+  minMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>): void {
     const ctrlValue = this.fromDate.value;
     ctrlValue.month(normalizedMonth.month());
     ctrlValue.day(1);
@@ -303,7 +307,7 @@ export class AppComponent {
     this.drawVisualization();
   }
 
-  maxYearHandler(normalizedYear: Moment) {
+  maxYearHandler(normalizedYear: Moment): void {
     const ctrlValue = this.toDate.value;
     ctrlValue.year(normalizedYear.year());
     this.toDate.setValue(ctrlValue);
@@ -311,7 +315,7 @@ export class AppComponent {
     console.log( 'setting max date to ' + this.userMaxDate + ' ' + ctrlValue );
   }
 
-  maxMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+  maxMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>): void {
     const ctrlValue = this.toDate.value;
     ctrlValue.month(normalizedMonth.month());
     ctrlValue.day(1);
@@ -330,7 +334,7 @@ export class AppComponent {
       returnObservable.next( this.stateToCovidDeathData.get( stateName ) );
       returnObservable.complete();
     }
-    else if ( stateName == STATES[0].name ){
+    else if ( stateName === STATES[0].name ){
       this.dataService.getUSCovidData().subscribe( (covidResponse: CovidDataResponse) => {
         const stateCovidData: StateCovidData = new StateCovidData();
         stateCovidData.items = covidResponse.items;
@@ -352,6 +356,11 @@ export class AppComponent {
 
     }
     return returnObservable;
+  }
+  rageClick( event: RageEvent ): void {
+    const rageTime: number = event.eventEndTimeStamp - event.eventStartTimeStamp;
+    console.log( 'Got rage click ' + event + ' with time ' + rageTime );
+    this.rageDrawer.open();
   }
 
 

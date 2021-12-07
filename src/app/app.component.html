@@ -13,40 +13,59 @@
 
     </div>
   </mat-menu>
-  <div class="title" fxHide.lt-sm fxLayout="row" fxLayoutAlign="center center">
-    <span>excessDeaths.info</span>
-    <button mat-icon-button [matMenuTriggerFor]="helpMenu" class="helpButton"><mat-icon  class="help">help</mat-icon>&#160;</button>
-    <!-- <a class="siteLink" fxHide.lt-sm href="https://www.cdc.gov/nchs/nvss/vsrr/covid19/excess_deaths.htm" target="_blank"><mat-icon class="mainLaunch">launch</mat-icon></a> -->
-  </div>
-  <div>
-    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="100px" fxLayoutGap.lt-md="20px" fxLayoutGap.lt-sm="5px" class="topRow">
-      <div fxLayout="row" fxLayoutGap="50px" fxLayoutGap.gt-md="100px" fxLayoutGap.lt-md="20px" fxLayoutAlign="center center">
-        <mat-form-field class="statePicker">
-          <mat-select [(value)]="currentState" (selectionChange)="stateChanged()">
-            <mat-option *ngFor="let state of stateList" [value]="state">{{state.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <div class="totalContainer">
-          <span class="total" >Excess Deaths:</span><span class="totalValue" ngClass.gt-md="largeTotal">{{currentExcess | number}}</span><br fxHide.gt-md/>
-          <span class="total">Covid Deaths:</span><span class="totalValue">{{currentCovid | number}}</span>
-        </div>
-        <div fxLayoutAlign="center center" fxlayout="row" fxHide.lt-sm>
-          <mat-form-field class="fromPicker">
-            <mat-label>From</mat-label>
-            <input matInput [min]="minDate" [max]="userMaxDate" [formControl]="fromDate" [matDatepicker]="fromPicker" (dateChange)="minValueChanged()">
-            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-            <mat-datepicker #fromPicker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field class="toPicker">
-            <mat-label>To</mat-label>
-            <input matInput [min]="userMinDate" [max]="maxDate" [formControl]="toDate" [matDatepicker]="toPicker" (dateChange)="maxValueChanged()">
-            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-            <mat-datepicker #toPicker></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <!-- <ngx-slider fxHide.lt-md ngClass="slider" ngClass.gt-md="sliderLarge" [(value)]="monthMinValue" [(highValue)]="monthMaxValue" [options]="monthOptions"></ngx-slider> -->
+  <mat-sidenav-container hasBackdrop="false">
+    <mat-sidenav-content class="mainContent">
+      <div class="title" fxHide.lt-sm fxLayout="row" fxLayoutAlign="center center">
+        <span>excessDeaths.info</span>
+        <button mat-icon-button [matMenuTriggerFor]="helpMenu" class="helpButton"><mat-icon  class="help">help</mat-icon>&#160;</button>
+        <!-- <a class="siteLink" fxHide.lt-sm href="https://www.cdc.gov/nchs/nvss/vsrr/covid19/excess_deaths.htm" target="_blank"><mat-icon class="mainLaunch">launch</mat-icon></a> -->
       </div>
-    </div>
-    <div id="chart_div" class="chartArea" [style.width.px]="graphWidth" [style.height.px]="graphHeight">&#160;</div>
-  </div>
+      <div>
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="100px" fxLayoutGap.lt-md="20px" fxLayoutGap.lt-sm="5px" class="topRow">
+          <div fxLayout="row" fxLayoutGap="50px" fxLayoutGap.gt-md="100px" fxLayoutGap.lt-md="20px" fxLayoutAlign="center center">
+            <mat-form-field class="statePicker">
+              <mat-select [(value)]="currentState" (selectionChange)="stateChanged()">
+                <mat-option *ngFor="let state of stateList" [value]="state">{{state.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="totalContainer">
+              <span class="total" >Excess Deaths:</span><span class="totalValue" ngClass.gt-md="largeTotal">{{currentExcess | number}}</span><br fxHide.gt-md/>
+              <span class="total">Covid Deaths:</span><span class="totalValue">{{currentCovid | number}}</span>
+            </div>
+            <div fxLayoutAlign="center center" fxlayout="row" fxHide.lt-sm>
+              <mat-form-field class="fromPicker">
+                <mat-label>From</mat-label>
+                <input matInput [min]="minDate" [max]="userMaxDate" [formControl]="fromDate" [matDatepicker]="fromPicker" (dateChange)="minValueChanged()">
+                <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+                <mat-datepicker #fromPicker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="toPicker">
+                <mat-label>To</mat-label>
+                <input matInput [min]="userMinDate" [max]="maxDate" [formControl]="toDate" [matDatepicker]="toPicker" (dateChange)="maxValueChanged()">
+                <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                <mat-datepicker #toPicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <!-- <ngx-slider fxHide.lt-md ngClass="slider" ngClass.gt-md="sliderLarge" [(value)]="monthMinValue" [(highValue)]="monthMaxValue" [options]="monthOptions"></ngx-slider> -->
+          </div>
+        </div>
+        <div id="chart_div" class="chartArea" [style.width.px]="graphWidth" [style.height.px]="graphHeight">&#160;</div>
+      </div>
+    </mat-sidenav-content>
+    <mat-sidenav #rageDrawer position="end">
+      <div class="rageDrawerContainer">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="30px" class="rageDrawerTopBar">
+          <span class="rageDrawerTitle">Frustrated?</span>
+          <button mat-icon-button (click)="rageDrawer.toggle()"><mat-icon>close</mat-icon></button>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center">
+          <div>
+            <p>It looks like you are having trouble finding something you are looking for.  Please email me at&#160; <a href="mailto:irv@greenGoby.com">irv@greenGoby.com</a>&#160;so I can help you.</p>
+          </div>
+          <div class="frustrationImage"><img width="300px" src="assets/frustration.svg"/></div>
+        </div>
+      </div>
+    </mat-sidenav>
+
+  </mat-sidenav-container>
 </div>
