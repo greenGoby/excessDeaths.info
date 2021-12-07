@@ -1,4 +1,4 @@
-# Excess Deaths
+# Excess Deaths due to Covid-19
 
 ## Background
 
